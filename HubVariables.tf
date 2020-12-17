@@ -1,3 +1,4 @@
+
 # Configure the Azure Provider
 provider "azurerm" {
   # whilst the `version` attribute is optional, we recommend pinning to a given version of the Provider
@@ -39,3 +40,5 @@ variable "mgmt_vnet_name" {
 variable "mgmt_vnet_cidr" {
   description = "Enter the CIDR space address for Management Virtual Hub Network"
 }
+
+variable "subnet_prefix" {}
