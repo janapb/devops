@@ -75,3 +75,22 @@ resource "azurerm_subnet_network_security_group_association" "spoke-asso-nsg" {
   subnet_id                 = azurerm_subnet.spoke_subnet[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg-spoke[count.index].id
 }
+
+locals {
+  security_group_rules = csvdecode(file("rules.csv"))
+}
+
+resource "azurerm_network_security_rule" "nsg" {
+  count                       = length(local.security_group_rules)
+  name                        = "${local.security_group_rules[count.index].name}-${count.index}"
+  priority                    = local.security_group_rules[count.index].priority
+  direction                   = local.security_group_rules[count.index].direction
+  access                      = local.security_group_rules[count.index].access
+  protocol                    = local.security_group_rules[count.index].protocol
+  source_port_range           = local.security_group_rules[count.index].source_port
+  destination_port_range      = local.security_group_rules[count.index].destination_port
+  source_address_prefix       = local.security_group_rules[count.index].source_address_prefix
+  destination_address_prefix  = local.security_group_rules[count.index].destination_address_prefix
+  resource_group_name         = azurerm_resource_group.poc_rg.name
+  network_security_group_name = azurerm_network_security_group.nsg-hub[1].name
+}
