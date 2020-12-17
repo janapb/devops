@@ -42,3 +42,6 @@ variable "mgmt_vnet_cidr" {
 }
 
 variable "subnet_prefix" {}
+variable "spoke_vnet_name" {}
+variable "spoke_vnet_cidr" {}
+variable "spoke_subnet_prefix" {}
