@@ -25,6 +25,8 @@ resource "azurerm_subnet" "hub_subnet" {
 }
 
 
+
+
 # Creates Network Security Group For Hub subnet 
 resource "azurerm_network_security_group" "nsg-hub" {
   count               = length(var.subnet_prefix)
@@ -94,6 +96,27 @@ resource "azurerm_network_security_rule" "nsg" {
   resource_group_name         = azurerm_resource_group.poc_rg.name
   network_security_group_name = azurerm_network_security_group.nsg-hub[1].name
 }
+
+locals {
+  db_security_group_rules2 = csvdecode(file("dbrules2.csv"))
+}
+
+resource "azurerm_network_security_rule" "db-nsg-rules2" {
+  count                       = length(local.db_security_group_rules2)
+  name                        = "${local.db_security_group_rules2[count.index].name}-${count.index}"
+  priority                    = local.db_security_group_rules2[count.index].priority
+  direction                   = local.db_security_group_rules2[count.index].direction
+  access                      = local.db_security_group_rules2[count.index].access
+  protocol                    = local.db_security_group_rules2[count.index].protocol
+  source_port_range           = local.db_security_group_rules2[count.index].source_port
+  destination_port_range      = local.db_security_group_rules2[count.index].destination_port
+  source_address_prefix       = local.db_security_group_rules2[count.index].source_address_prefix
+  destination_address_prefix  = local.db_security_group_rules2[count.index].destination_address_prefix
+  resource_group_name         = azurerm_resource_group.poc_rg.name
+  network_security_group_name = azurerm_network_security_group.nsg-spoke[1].name
+}
+
+
 
 
 locals {
