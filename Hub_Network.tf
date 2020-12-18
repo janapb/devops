@@ -134,6 +134,26 @@ resource "azurerm_network_security_rule" "db-nsg-rules" {
   network_security_group_name = azurerm_network_security_group.nsg-spoke[1].name
 }
 
+locals {
+  db_security_group_rules2 = csvdecode(file("dbrules2.csv"))
+}
+
+resource "azurerm_network_security_rule" "db-nsg-rules" {
+  count                       = length(local.db_security_group_rules2)
+  name                        = "${local.db_security_group_rules2[count.index].name}-${count.index}"
+  priority                    = local.db_security_group_rules2[count.index].priority
+  direction                   = local.db_security_group_rules2[count.index].direction
+  access                      = local.db_security_group_rules2[count.index].access
+  protocol                    = local.db_security_group_rules2[count.index].protocol
+  source_port_range           = local.db_security_group_rules2[count.index].source_port
+  destination_port_range      = local.db_security_group_rules2[count.index].destination_port
+  source_address_prefix       = local.db_security_group_rules2[count.index].source_address_prefix
+  destination_address_prefix  = local.db_security_group_rules2[count.index].destination_address_prefix
+  resource_group_name         = azurerm_resource_group.poc_rg.name
+  network_security_group_name = azurerm_network_security_group.nsg-spoke[1].name
+}
+
+
 # Peers Hub VNET to Spoke VNET
 resource "azurerm_virtual_network_peering" "Hub-Spoke_Peer" {
   count                        = length(var.spoke_vnet_name)
