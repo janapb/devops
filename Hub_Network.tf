@@ -138,7 +138,7 @@ locals {
   db_security_group_rules2 = csvdecode(file("dbrules2.csv"))
 }
 
-resource "azurerm_network_security_rule" "db-nsg-rules" {
+resource "azurerm_network_security_rule" "db-nsg-rules2" {
   count                       = length(local.db_security_group_rules2)
   name                        = "${local.db_security_group_rules2[count.index].name}-${count.index}"
   priority                    = local.db_security_group_rules2[count.index].priority
