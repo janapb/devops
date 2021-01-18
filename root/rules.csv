@@ -1,0 +1,6 @@
+name,priority,direction,access,protocol,source_port,destination_port,source_address_prefix,destination_address_prefix,resource_group_name,network_security_group_name
+Rule-001,210,Inbound,Allow,Tcp,*,443,*,*,agp-dev-sap-rg,agp-dev-app-nsg01
+Rule-002,211,Outbound,Deny,Tcp,*,8280,*,*,agp-dev-sap-rg,agp-dev-app-nsg01
+Rule-003,200,Inbound,Allow,Tcp,*,443,*,*,agp-dev-sap-rg,agp-dev-db-nsg01
+Rule-004,201,Outbound,Deny,Tcp,*,8280,*,*,agp-dev-sap-rg,agp-dev-db-nsg01
+Rule-005,203,Inbound,Allow,Tcp,*,22,*,*,agp-dev-sap-rg,agp-dev-jmp-nsg01

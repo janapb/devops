@@ -1,0 +1,94 @@
+{
+  "AGPNetworkArchitecture-Vnet&Subnet": [],
+  "CustomerCIDR": [],
+  "Terraformstate": [
+    {
+      "Storagename": "devcomptfstorage",
+      "Containername": "devcomptfcontainer",
+      "Resourcegroup_Name": "AZ_LANDING_TEST",
+      "Location": "westeurope"
+    }
+  ],
+  "ResourceGroup": [
+    {
+      "Env": "Dev",
+      "Name": "agp-dev-sap-rg",
+      "Location": "westeurope"
+    }
+  ],
+  "Tags": [
+    {
+      "Env": "Dev",
+      "Owner": "Jana",
+      "Costcenter": "SAPTS"
+    }
+  ],
+  "Subnet": [
+    {
+      "Subnet": "Jump Box",
+      "To host": "Jump Box",
+      "Subnet_Name": "agp-dev-jmp-subnet",
+      "Resourcegroup_Name": "agp-dev-sap-rg",
+      "NSG": "agp-dev-jmp-nsg01",
+      "Vnet_Name": "agp-dev-hub-vnet",
+      "Region": "westeurope",
+      "Address_Space": "10.3.32.32/28"
+    },
+    {
+      "Subnet": "Dev ",
+      "To host": "Dev SAP Application",
+      "Subnet_Name": "agp-dev-app-subnet",
+      "Resourcegroup_Name": "agp-dev-sap-rg",
+      "NSG": "agp-dev-app-nsg01",
+      "Vnet_Name": "agp-dev-spoke-vnet",
+      "Region": "westeurope",
+      "Address_Space": "10.3.32.128/27"
+    },
+    {
+      "Subnet": "Dev ",
+      "To host": "Dev SAP Database",
+      "Subnet_Name": "agp-dev-db-subnet",
+      "Resourcegroup_Name": "agp-dev-sap-rg",
+      "NSG": "agp-dev-db-nsg01",
+      "Vnet_Name": "agp-dev-spoke-vnet",
+      "Region": "westeurope",
+      "Address_Space": "10.3.32.160/27"
+    }
+  ],
+  "Vnet": [
+    {
+      "Vnet": "Hub Vnet",
+      "To_Host": "Hub Appliance",
+      "Vnet_Name": "agp-dev-hub-vnet",
+      "Resourcegroup_Name": "agp-dev-sap-rg",
+      "Region": "westeurope",
+      "Addres_Space": "10.3.32.0/25"
+    },
+    {
+      "Vnet": "Spoke Vnet - Dev",
+      "To_Host": "SAP Application & Database",
+      "Vnet_Name": "agp-dev-spoke-vnet",
+      "Resourcegroup_Name": "agp-dev-sap-rg",
+      "Region": "westeurope",
+      "Addres_Space": "10.3.32.128/25"
+    }
+  ],
+  "Peering": [
+    {
+      "name": "Hub-To-Spoke",
+      "resource_group_name": "agp-dev-sap-rg",
+      "virtual_network_name": "agp-dev-hub-vnet",
+      "remote_virtual_network": "agp-dev-spoke-vnet",
+      "allow_virtual_network_access": 1,
+      "allow_forwarded_traffic": 1
+    },
+    {
+      "name": "Spoke-To-Hub",
+      "resource_group_name": "agp-dev-sap-rg",
+      "virtual_network_name": "agp-dev-spoke-vnet",
+      "remote_virtual_network": "agp-dev-hub-vnet",
+      "allow_virtual_network_access": 1,
+      "allow_forwarded_traffic": 0
+    }
+  ]
+}
